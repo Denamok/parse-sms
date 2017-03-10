@@ -86,7 +86,7 @@ do
   thishour=$( echo $thistime | cut -d':' -f1)
   dayofweek=$(date --date=${thisweek} "+%A")  
   daymonthtitle=$(date --date=${thisweek} "+%d %B")  
-  if ((thisweek < lastweek))
+  if [[ "$thisweek" > "$lastweek" ]]
   then
       if [ "$thishour" -lt "$morning" ] || [ "$thishour" -ge "$evening" ]
       then
