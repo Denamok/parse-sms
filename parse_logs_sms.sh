@@ -63,21 +63,22 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
       date_tmp=$(echo $line | cut -d' ' -f1)
       dates[$i]=$(echo $date_tmp | cut -d'.' -f1)
       servers[$i]=$(echo $line | cut -d' ' -f2)
-      msg[$i]=$(echo $line | sed 's/.*message://' | sed 's/\\n//g')
+      msg[$i]=$(echo $line | sed 's/.*message://' | sed 's/\\n//g' | sed 's/Nagios://g' | sed 's/DOWNIP: //g' | sed 's/UPID: //g')
+      #msg[$i]=$(echo $line | sed 's/.*message://' | sed 's/\\n//g')
       tel[$i]=$tel
       i=$(($i + 1))
     fi
 done < ${LOGFILE}
 print_trace "Parsing of logfile...done."
-
+echo $i
 lastweek="$(date "+%Y-%m-%d" -d "7 days ago")"
 morning="8"
 evening="20"
 lastdayofweek=""
 
-echo
-echo "Messages reçus pour ${WHO} entre ${evening}H et ${morning}H depuis le ${lastweek} :"
-echo
+#echo
+#echo "Messages reçus pour ${WHO} entre ${evening}H et ${morning}H depuis le ${lastweek} :"
+#echo
 
 for i in `seq 1 $(expr ${i} - 1)`
 do
@@ -100,9 +101,8 @@ do
            echo 
            lastdayofweek=$dayofweek
         fi
-        echo "Message reçu à $thistime depuis ${servers[$i]} :"
-        echo ${msg[$i]%% - *}"  "${msg[$i]: -8}
-        echo
+        #echo "Message reçu à $thistime depuis ${servers[$i]} :"
+        echo ${msg[$i]%% - *}" "${msg[$i]: -8}
     fi
   fi
 done
