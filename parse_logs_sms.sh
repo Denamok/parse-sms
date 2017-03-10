@@ -11,7 +11,7 @@ print_usage() {
 }
 
 declare nums
-nums["XXX"]="YYY";
+nums["XXX"]="YYY"
 
 while [[ $# -gt 1 ]]
 do
@@ -63,7 +63,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
       date_tmp=$(echo $line | cut -d' ' -f1)
       dates[$i]=$(echo $date_tmp | cut -d'.' -f1)
       servers[$i]=$(echo $line | cut -d' ' -f2)
-      msg[$i]=$(echo $line | sed 's/.*message://')
+      msg[$i]=$(echo $line | sed 's/.*message://' | sed 's/\\n//g')
       tel[$i]=$tel
       i=$(($i + 1))
     fi
@@ -101,7 +101,7 @@ do
            lastdayofweek=$dayofweek
         fi
         echo "Message reçu à $thistime depuis ${servers[$i]} :"
-        echo "${msg[$i]}"
+        echo ${msg[$i]%% - *}"  "${msg[$i]: -8}
         echo
     fi
   fi
